@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <h1>细节补充模板</h1>
-    <TestComponent />
+    <div>属性透传</div>
+    <A id="a" class="a-component" data-test="test" />
   </div>
 </template>
 
 <script setup>
-import TestComponent from './components/TestComponent.vue'
+import A from './components/A.vue'
 </script>
 
 <style scoped></style>
