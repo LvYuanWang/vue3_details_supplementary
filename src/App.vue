@@ -1,12 +1,11 @@
 <template>
-  <div id="app">
-    <h1>细节补充模板</h1>
-    <TestComponent />
-  </div>
+  <div id="app">鼠标当前坐标位置: {{ x }} {{ y }}</div>
 </template>
 
 <script setup>
-import TestComponent from './components/TestComponent.vue'
+import { useMouse } from './hooks/useMouse'
+
+const { x, y } = useMouse()
 </script>
 
 <style scoped></style>
