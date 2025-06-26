@@ -1,9 +1,16 @@
 <template>
   <div class="testComponent_container">
-    <h2>细节补充模板测试组件</h2>
+    <h2>{{ Text }}</h2>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+defineProps({
+  Text: {
+    type: String,
+    default: 'TestComponent',
+  },
+})
+</script>
 
 <style scoped></style>

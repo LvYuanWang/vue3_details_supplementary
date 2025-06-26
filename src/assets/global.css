@@ -1,0 +1,22 @@
+body {
+  background-color: #b0b0b079;
+}
+
+button {
+  height: 40px;
+  width: 60px;
+  border: none;
+  border-radius: 8px;
+  background-color: #56e456;
+  color: #fff;
+  cursor: pointer;
+  transition: all .5s;
+}
+
+button:hover {
+  opacity: .8;
+}
+
+button:active {
+  opacity: .4;
+}
