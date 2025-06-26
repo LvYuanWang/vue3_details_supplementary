@@ -1,0 +1,32 @@
+button {
+  height: 30px;
+  width: 60px;
+  border: none;
+  border-radius: 8px;
+  background-color: #e46756;
+  color: #fff;
+  cursor: pointer;
+  transition: all .5s;
+}
+
+button:hover {
+  opacity: .8;
+}
+
+button:active {
+  opacity: .4;
+}
+
+input {
+  padding: 12px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #ff9800;
+  box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.2);
+}
