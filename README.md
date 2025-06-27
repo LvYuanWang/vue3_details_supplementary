@@ -1,43 +1,101 @@
-# 本章导读
+# Teleport
 
-本章“细节补充”，介绍一些**细枝末节**的知识。
+这是 Vue 里面的一个内置组件。作用：将一个组件内部的一部分模板“传送”到该组件的 DOM 结构外层的位置去。
 
-本章知识特点：**轻知识、比较杂、比较碎**
+**快速上手**
 
-- 之前没有介绍的特性
-- 一个常见的需求
-- 一个常用的功能
-- 一些常见的第三方库
-- ....
+模态框：理想情况下，模态框的按钮和模态框本身是在同一个组件中，因为它们都与组件的开关状态有关。但这意味着该模态框将与按钮一起渲染在应用 DOM 结构里很深的地方。
 
-整个课程会分成几个模块：
+例如：
 
-1. Vue
-   - 透传
-   - 自定义指令
-   - 组合式函数
-   - ....
-2. Vue-router
-   - 导航守卫
-   - 动态路由
-   - 零碎的知识（别名、命名视图、重定向...）
-   - ....
-3. Pinia
-   - 自定义插件
-   - 通信方式总结
-   - ....
-4. 场景补充
-   - 自定义ref实现防抖
-   - 长列表优化
-   - .....
-5. 第三方库
+```vue
+<script setup>
+import { ref } from 'vue'
 
-[Vue]自定义指令
+const open = ref(false)
+</script>
 
-[Router]导航守卫
+<template>
+  <button @click="open = true">打开模态框</button>
 
-**讲解方式**：该轻的轻，该重的重的
+  <div v-if="open" class="modal">
+    <p>模态框内容</p>
+    <button @click="open = false">关闭</button>
+  </div>
+</template>
 
-**学习方式**：灵活安排
+<style scoped>
+.modal {
+  position: fixed;
+  z-index: 999;
+  top: 20%;
+  left: 50%;
+  width: 300px;
+  margin-left: -150px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+.modal p {
+  padding: 10px;
+  margin: 0;
+  background-color: #f4f4f4;
+  text-align: center;
+}
+</style>
+```
 
-本章会是一个长期更新章节。
+打开该模态框，观察渲染结构：
+
+```html
+<div id="app" data-v-app="">
+  <div class="outer">
+    <h1>Teleport示例</h1>
+    <div>
+      <button data-v-381af681="">打开模态框</button>
+      <div data-v-381af681="" class="modal">
+        <p data-v-381af681="">模态框内容</p>
+        <button data-v-381af681="">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+这里的渲染结构其实是不太合适的。
+
+1. position: fixed 能够相对于浏览器窗口放置有一个条件，那就是不能有任何祖先元素设置了 transform、perspective 或者 filter 样式属性。也就是说如果我们想要用 CSS transform 为祖先节点 \<div class="outer"> 设置动画，就会不小心破坏模态框的布局！
+2. 这个模态框的 z-index 受限于它的容器元素。如果有其他元素与 \<div class="outer"> 重叠并有更高的 z-index，则它会覆盖住我们的模态框。
+
+总结起来，就是**模态框的样式会受到所在位置的祖级元素的影响**。
+
+以前书写原生 HTML 的时候，模特框一般都是在最外层：
+
+```html
+<body>
+  <div class="container">
+    <!-- 其他代码 -->
+  </div>
+  <div class="modal"></div>
+</body>
+```
+
+这种场景就可以使用 Teleport
+
+```vue
+<Teleport to="body">
+  <div v-if="open" class="modal">
+    <p>模态框内容</p>
+    <button @click="open = false">关闭</button>
+  </div>
+</Teleport>
+```
+
+使用 to 属性来指定要渲染的位置。
+
+**实战案例**
+
+用户管理模块中，有一个全局的“用户详情”对话框，该对话框可以在页面的任何地方被触发显示。为了使该对话框在 DOM 结构上位于应用的根元素下，并且避免它受到父组件的 CSS 样式影响，可以使用 Teleport 组件将该对话框传送到指定的 DOM 节点。
+
+---
+
+-EOF-
