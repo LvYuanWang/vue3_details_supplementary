@@ -1,0 +1,25 @@
+.container {
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px #ccc;
+  margin-top: 10px;
+}
+
+button {
+  height: 40px;
+  width: 80px;
+  border: none;
+  border-radius: 8px;
+  background-color: #d356e4;
+  color: #fff;
+  cursor: pointer;
+  transition: all .5s;
+}
+
+button:hover {
+  opacity: .8;
+}
+
+button:active {
+  opacity: .4;
+}
