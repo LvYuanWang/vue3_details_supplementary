@@ -1,46 +1,48 @@
 <template>
-  <div id="app">
-    <h1>切换页面</h1>
-    <div class="btns">
-      <button @click="loadComponent('Home')">切换主页</button>
-      <button @click="loadComponent('Detail')">切换详情页</button>
-    </div>
-
-    <component v-if="currentComponent" :is="currentComponent"></component>
+  <div id="app" class="container">
+    <h1>控制台</h1>
+    <Suspense @pending="onPending" @resolve="onResolve" @fallback="onFallback">
+      <!-- 当所有异步依赖都完成后, 会进入完成状态, 展示默认插槽内容 -->
+      <template #default>
+        <div>
+          <!-- 第一部分: 好友状态组件(2s) -->
+          <FirstComponent />
+          <!-- 第二部分: 活动提要组件(5s) 统计提要组件(8s) -->
+          <ScondComponent />
+        </div>
+      </template>
+      <!-- 如果有任何异步依赖外完成, 则进入挂起状态, 在挂起状态期间, 展示的是后备内容 -->
+      <template #fallback>
+        <LoadingComponent />
+      </template>
+    </Suspense>
   </div>
 </template>
 
 <script setup>
-// import Home from './components/Home.vue'
-// import Detail from './components/Detail.vue'
-import { shallowRef, defineAsyncComponent } from 'vue'
+import FirstComponent from './components/FirstComponent.vue'
+import LoadingComponent from './components/LoadingComponent.vue'
+import ScondComponent from './components/ScondComponent.vue'
 
-// 当前组件
-const currentComponent = shallowRef(null)
-
-/**
- * 使用 defineAsyncComponent 异步加载组件
- * @param component 组件名称
- */
-const loadComponent = (component) => {
-  currentComponent.value = defineAsyncComponent(() => import(`./components/${component}.vue`))
+// Suspense组件事件方法
+const onPending = () => {
+  console.log('Suspense组件进入挂起状态')
+}
+const onResolve = () => {
+  console.log('Suspense组件进入完成状态')
+}
+const onFallback = () => {
+  console.log('Suspense组件进入后备状态')
 }
 </script>
 
 <style scoped>
 #app {
+  width: 60vw;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
-}
-
-.btns {
-  display: flex;
-  justify-content: center;
-  padding-bottom: 15px;
-  width: 100%;
-  border-bottom: 1px solid #ccc;
-  gap: 10px;
+  margin: 10px auto;
+  height: 70%;
 }
 </style>
