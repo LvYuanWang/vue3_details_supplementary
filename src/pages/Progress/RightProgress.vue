@@ -1,6 +1,6 @@
 <template>
-  <div class="home-container">
-    <h2>This is Home Page!!</h2>
+  <div class="progress-container">
+    <h2>This is Right Progress!!</h2>
   </div>
 </template>
 
